@@ -15,18 +15,10 @@ export class DashboardComponent implements OnInit {
   private readonly auth = inject(AuthService);
 
   session: AuthSession | null = null;
-  totalUsers = 0;
 
   async ngOnInit(): Promise<void> {
     await this.auth.ensureReady();
     this.session = this.auth.currentUser;
-
-    try {
-      const stats = await this.auth.getUserStats();
-      this.totalUsers = stats.totalUsers;
-    } catch {
-      this.totalUsers = 0;
-    }
   }
 
   logout(): void {

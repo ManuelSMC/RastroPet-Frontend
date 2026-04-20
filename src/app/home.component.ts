@@ -68,10 +68,6 @@ export class HomeComponent implements OnInit {
     this.applyFilter();
   }
 
-  scrollToForm(): void {
-    document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
   onImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.selectedImage = input.files?.[0] ?? null;
@@ -81,6 +77,7 @@ export class HomeComponent implements OnInit {
   onSubmit(): void {
     if (this.reportForm.invalid || this.isSubmitting || !this.selectedImage) {
       this.reportForm.markAllAsTouched();
+      this.statusMessage = 'Completa todos los campos obligatorios y agrega una foto para publicar.';
       return;
     }
 

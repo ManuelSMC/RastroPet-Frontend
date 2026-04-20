@@ -21,10 +21,10 @@
     <a class="ghost-btn" routerLink="/login" *ngIf="!(session$ | async)">Entrar</a>
     <a class="ghost-btn" routerLink="/register" *ngIf="!(session$ | async)">Crear cuenta</a>
     <button class="ghost-btn" type="button" *ngIf="session$ | async" (click)="logout()">Salir</button>
-    <button class="action-btn secondary" type="button" (click)="scrollToForm()">
+    <a class="action-btn secondary" href="#formulario">
       <span>Reportar mascota</span>
       <span aria-hidden="true">+</span>
-    </button>
+    </a>
     <div class="filters" aria-label="Filtros de publicaciones">
       <button type="button" [class.active]="selectedFilter === 'todas'" (click)="setFilter('todas')">Todas</button>
       <button type="button" [class.active]="selectedFilter === 'perdida'" (click)="setFilter('perdida')">Perdidas</button>
@@ -43,10 +43,10 @@
       </p>
 
       <div class="hero-cta">
-        <button class="action-btn" type="button" (click)="scrollToForm()">
+        <a class="action-btn" href="#formulario">
           <span>Publicar ahora</span>
           <span aria-hidden="true">↗</span>
-        </button>
+        </a>
         <p class="counter">{{ totalReports }} mascotas reportadas</p>
       </div>
 
