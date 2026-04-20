@@ -1,11 +1,10 @@
 :host {
-  --sand: #f7f3e9;
-  --ink: #1f2833;
-  --teal: #0f9f9a;
-  --coral: #ef6f56;
-  --card: #fffdf7;
-  --line: #e9decb;
-  --shadow: 0 16px 40px rgba(31, 40, 51, 0.12);
+  --sand: #f4efe4;
+  --ink: #1e2934;
+  --teal: #0b9f98;
+  --coral: #ef6a4b;
+  --line: #e4d8bf;
+  --shadow: 0 18px 42px rgba(30, 41, 52, 0.13);
 
   color: var(--ink);
   display: block;
@@ -21,14 +20,14 @@
 }
 
 .page-bg {
-  background: radial-gradient(circle at 18% 18%, #ffe0ca 0, transparent 35%),
-    radial-gradient(circle at 85% 12%, #c5ece8 0, transparent 30%),
-    linear-gradient(165deg, #fef9f1 0%, #f7f0e2 58%, #f8f5ec 100%);
+  background: radial-gradient(circle at 8% 12%, #ffd7b9 0, transparent 34%),
+    radial-gradient(circle at 92% 6%, #c4f0ea 0, transparent 28%),
+    linear-gradient(165deg, #fffbf4 0%, #f7efe2 58%, #f5f1e8 100%);
 }
 
 .page-texture {
-  background-image: linear-gradient(rgba(31, 40, 51, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(31, 40, 51, 0.03) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(30, 41, 52, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 41, 52, 0.03) 1px, transparent 1px);
   background-size: 28px 28px;
   z-index: -1;
 }
@@ -44,7 +43,7 @@ footer {
   align-items: center;
   display: flex;
   justify-content: space-between;
-  padding: 1.25rem 1.25rem 0.8rem;
+  padding: 1rem 1.25rem 0.85rem;
   gap: 1rem;
 }
 
@@ -110,16 +109,8 @@ footer p,
   flex-wrap: wrap;
 }
 
-.session-chip {
-  border-radius: 999px;
-  background: rgba(15, 159, 154, 0.12);
-  color: var(--ink);
-  padding: 0.55rem 0.85rem;
-  font-weight: 700;
-}
-
 .filters {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.78);
   border: 1px solid var(--line);
   border-radius: 999px;
   display: flex;
@@ -128,8 +119,7 @@ footer p,
 }
 
 .filters button,
-.ghost-btn,
-.admin-link {
+.ghost-btn {
   background: transparent;
   border: 0;
   border-radius: 999px;
@@ -148,15 +138,11 @@ footer p,
   color: #fff;
 }
 
-.admin-link {
-  color: var(--ink);
-  text-decoration: none;
-  padding: 0.62rem 0.85rem;
-  background: rgba(31, 40, 51, 0.05);
-}
-
 .nav-actions .ghost-btn {
+  background: rgba(31, 40, 51, 0.055);
+  color: var(--ink);
   padding: 0.62rem 0.85rem;
+  text-decoration: none;
 }
 
 main {
@@ -166,7 +152,7 @@ main {
 .hero {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1.4fr 1fr;
   margin: 1rem 0 2.2rem;
 }
 
@@ -174,8 +160,7 @@ main {
 .hero-card,
 .pet-card,
 form,
-.empty-state,
-.edit-banner {
+.empty-state {
   animation: reveal-up 0.6s ease both;
 }
 
@@ -216,23 +201,22 @@ h1 {
 
 .counter,
 .status-pill {
-  background: rgba(15, 159, 154, 0.12);
+  background: rgba(11, 159, 152, 0.12);
   border-radius: 999px;
   margin: 0;
   padding: 0.55rem 0.95rem;
 }
 
 .status-pill {
-  border: 1px solid rgba(15, 159, 154, 0.18);
+  border: 1px solid rgba(11, 159, 152, 0.2);
   margin-top: 1rem;
 }
 
 .hero-card,
 .pet-card,
 form,
-.empty-state,
-.edit-banner {
-  background: rgba(255, 255, 255, 0.88);
+.empty-state {
+  background: rgba(255, 255, 255, 0.9);
   border: 1px solid var(--line);
   border-radius: 1.2rem;
   box-shadow: var(--shadow);
@@ -279,6 +263,10 @@ form,
 .cards-section,
 .form-section {
   margin-top: 2.2rem;
+}
+
+.form-section {
+  scroll-margin-top: 1rem;
 }
 
 .section-head {
@@ -349,13 +337,13 @@ form,
 }
 
 .tag.lost {
-  background: rgba(239, 111, 86, 0.18);
+  background: rgba(239, 106, 75, 0.18);
   color: #9b3020;
 }
 
 .tag.found {
-  background: rgba(15, 159, 154, 0.18);
-  color: #0c615e;
+  background: rgba(11, 159, 152, 0.18);
+  color: #0d5f5b;
 }
 
 .description,
@@ -379,7 +367,7 @@ form,
 }
 
 .action-btn {
-  background: linear-gradient(135deg, var(--coral), #da4530);
+  background: linear-gradient(135deg, var(--coral), #d9482f);
   color: #fff;
   cursor: pointer;
   font-weight: 700;
@@ -388,19 +376,18 @@ form,
 }
 
 .action-btn.secondary {
-  background: linear-gradient(135deg, #173f4f, #0f9f9a);
+  background: linear-gradient(135deg, #1a4452, #0b9f98);
 }
 
 .action-btn:hover,
 .ghost-btn:hover,
 .filters button:hover,
-.admin-link:hover,
 .whatsapp-link:hover {
   transform: translateY(-1px);
 }
 
 .action-btn:hover {
-  box-shadow: 0 8px 18px rgba(218, 69, 48, 0.3);
+  box-shadow: 0 8px 18px rgba(217, 72, 47, 0.28);
 }
 
 .whatsapp-link {
@@ -408,17 +395,6 @@ form,
   color: #0a1f13;
   font-weight: 700;
   padding: 0.62rem 0.8rem;
-}
-
-.ghost-btn {
-  background: rgba(31, 40, 51, 0.05);
-  color: var(--ink);
-  padding: 0.62rem 0.85rem;
-}
-
-.ghost-btn.danger {
-  background: rgba(239, 111, 86, 0.14);
-  color: #9b3020;
 }
 
 .empty-state {
@@ -429,7 +405,7 @@ form,
 }
 
 .empty-icon {
-  background: rgba(15, 159, 154, 0.12);
+  background: rgba(11, 159, 152, 0.12);
   border-radius: 0.9rem;
   color: var(--teal);
   display: grid;
@@ -439,43 +415,11 @@ form,
   width: 2.4rem;
 }
 
-.edit-banner {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  padding: 0.85rem 1rem;
-}
-
-.publish-gate {
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid var(--line);
-  border-radius: 1.2rem;
-  box-shadow: var(--shadow);
-  padding: 1.25rem;
-  display: grid;
-  gap: 0.8rem;
-}
-
-.publish-gate h2 {
-  font-family: Georgia, 'Times New Roman', serif;
-  margin: 0;
-}
-
-.gate-actions {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.edit-banner span {
-  font-weight: 700;
-}
-
 form {
   display: grid;
-  gap: 0.85rem;
-  padding: 1rem;
+  gap: 0.9rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 1.15rem;
 }
 
 label,
@@ -483,6 +427,10 @@ fieldset {
   display: grid;
   gap: 0.35rem;
   font-size: 0.92rem;
+}
+
+.full {
+  grid-column: 1 / -1;
 }
 
 .file-field small {
@@ -513,13 +461,6 @@ legend {
   display: inline-flex;
   gap: 0.4rem;
   margin-right: 1rem;
-}
-
-.form-actions {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  justify-content: flex-start;
 }
 
 .submit {
@@ -567,6 +508,10 @@ footer p {
 }
 
 @media (max-width: 640px) {
+  form {
+    grid-template-columns: 1fr;
+  }
+
   footer {
     flex-direction: column;
     gap: 0.4rem;
@@ -585,8 +530,7 @@ footer p {
 
   .ghost-btn,
   .whatsapp-link,
-  .action-btn,
-  .admin-link {
+  .action-btn {
     width: 100%;
   }
 }

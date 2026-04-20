@@ -42,7 +42,6 @@ export class HomeComponent implements OnInit {
   filteredReports: PetReport[] = [];
   selectedImage: File | null = null;
   selectedImageName = 'Ninguna imagen seleccionada';
-  editingReportId: string | null = null;
   isSubmitting = false;
   statusMessage = 'Listo para publicar una mascota.';
 
@@ -69,39 +68,6 @@ export class HomeComponent implements OnInit {
     this.applyFilter();
   }
 
-  startEdit(report: PetReport): void {
-    this.editingReportId = report.id;
-    this.statusMessage = `Editando ${report.petName}. Actualiza los datos y guarda los cambios.`;
-    this.reportForm.setValue({
-      petName: report.petName,
-      description: report.description,
-      neighborhood: report.neighborhood,
-      lastSeenAddress: report.lastSeenAddress,
-      foundAddress: report.foundAddress,
-      phone: report.phone,
-      type: report.type
-    });
-    this.selectedImage = null;
-    this.selectedImageName = 'La foto actual se mantiene si no eliges una nueva.';
-    document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  cancelEdit(): void {
-    this.editingReportId = null;
-    this.selectedImage = null;
-    this.selectedImageName = 'Ninguna imagen seleccionada';
-    this.statusMessage = 'Edicion cancelada. Puedes publicar una nueva mascota.';
-    this.reportForm.reset({
-      petName: '',
-      description: '',
-      neighborhood: '',
-      lastSeenAddress: '',
-      foundAddress: '',
-      phone: '',
-      type: 'perdida'
-    });
-  }
-
   scrollToForm(): void {
     document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -113,61 +79,25 @@ export class HomeComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (!this.auth.isAuthenticated()) {
-      this.statusMessage = 'Debes iniciar sesion para publicar reportes.';
-      return;
-    }
-
-    if (this.reportForm.invalid || this.isSubmitting || (!this.selectedImage && !this.editingReportId)) {
+    if (this.reportForm.invalid || this.isSubmitting || !this.selectedImage) {
       this.reportForm.markAllAsTouched();
       return;
     }
 
     this.isSubmitting = true;
     const formData = this.buildFormData();
-    const request = this.editingReportId
-      ? this.http.put<PetReport>(`${this.apiUrl}/${this.editingReportId}`, formData)
-      : this.http.post<PetReport>(this.apiUrl, formData);
+    const request = this.http.post<PetReport>(this.apiUrl, formData);
 
     request.subscribe({
       next: (savedReport) => {
-        this.reports = this.editingReportId
-          ? this.reports.map((report) => (report.id === savedReport.id ? savedReport : report))
-          : [savedReport, ...this.reports];
+        this.reports = [savedReport, ...this.reports];
 
         this.applyFilter();
-        this.resetFormState(this.editingReportId ? 'Reporte actualizado correctamente.' : 'Reporte publicado correctamente.');
+        this.resetFormState('Reporte publicado correctamente.');
       },
       error: () => {
         this.isSubmitting = false;
-        this.statusMessage = this.editingReportId
-          ? 'No se pudo actualizar el reporte. Intenta otra vez.'
-          : 'No se pudo publicar el reporte. Intenta de nuevo.';
-      }
-    });
-  }
-
-  deleteReport(reportId: string): void {
-    const report = this.reports.find((item) => item.id === reportId);
-    const confirmed = window.confirm(`Eliminar la publicacion de ${report?.petName ?? 'esta mascota'}?`);
-
-    if (!confirmed) {
-      return;
-    }
-
-    this.http.delete(`${this.apiUrl}/${reportId}`).subscribe({
-      next: () => {
-        this.reports = this.reports.filter((item) => item.id !== reportId);
-        this.applyFilter();
-
-        if (this.editingReportId === reportId) {
-          this.cancelEdit();
-        }
-
-        this.statusMessage = 'Publicacion eliminada.';
-      },
-      error: () => {
-        this.statusMessage = 'No se pudo eliminar la publicacion.';
+        this.statusMessage = 'No se pudo publicar el reporte. Intenta de nuevo.';
       }
     });
   }
@@ -211,7 +141,6 @@ export class HomeComponent implements OnInit {
 
   private resetFormState(message: string): void {
     this.isSubmitting = false;
-    this.editingReportId = null;
     this.selectedImage = null;
     this.selectedImageName = 'Ninguna imagen seleccionada';
     this.statusMessage = message;

@@ -15,26 +15,21 @@
   </div>
 
   <div class="nav-actions">
+    <a class="ghost-btn" href="#publicaciones">Publicaciones</a>
+    <a class="ghost-btn" href="#formulario">Publicar</a>
+    <a class="ghost-btn" routerLink="/dashboard" *ngIf="session$ | async">Mi cuenta</a>
+    <a class="ghost-btn" routerLink="/login" *ngIf="!(session$ | async)">Entrar</a>
+    <a class="ghost-btn" routerLink="/register" *ngIf="!(session$ | async)">Crear cuenta</a>
+    <button class="ghost-btn" type="button" *ngIf="session$ | async" (click)="logout()">Salir</button>
     <button class="action-btn secondary" type="button" (click)="scrollToForm()">
       <span>Reportar mascota</span>
       <span aria-hidden="true">+</span>
     </button>
-    <a class="ghost-btn admin-link" routerLink="/admin">Panel admin</a>
     <div class="filters" aria-label="Filtros de publicaciones">
       <button type="button" [class.active]="selectedFilter === 'todas'" (click)="setFilter('todas')">Todas</button>
       <button type="button" [class.active]="selectedFilter === 'perdida'" (click)="setFilter('perdida')">Perdidas</button>
       <button type="button" [class.active]="selectedFilter === 'encontrada'" (click)="setFilter('encontrada')">Encontradas</button>
     </div>
-    <ng-container *ngIf="session$ | async as session; else guestActions">
-      <span class="session-chip">{{ session.name }} · {{ session.role }}</span>
-      <a class="ghost-btn" routerLink="/dashboard">Mi panel</a>
-      <button *ngIf="session.role === 'admin'" class="ghost-btn" type="button" routerLink="/admin">Admin</button>
-      <button class="ghost-btn" type="button" (click)="logout()">Salir</button>
-    </ng-container>
-    <ng-template #guestActions>
-      <a class="ghost-btn" routerLink="/login">Entrar</a>
-      <a class="ghost-btn" routerLink="/register">Registrarse</a>
-    </ng-template>
   </div>
 </header>
 
@@ -44,7 +39,7 @@
       <p class="eyebrow">Plataforma comunitaria en Mexico</p>
       <h1>Reporta y encuentra mascotas perdidas mas rapido</h1>
       <p class="hero-description">
-        Publica sin registro, comparte la ultima direccion donde se vio o encontro y conecta por WhatsApp al instante.
+        Reporta una mascota perdida o encontrada en minutos. Comparte ubicacion, foto y contacto para ayudar a que regrese a casa.
       </p>
 
       <div class="hero-cta">
@@ -61,9 +56,9 @@
     <div class="hero-card">
       <p class="mini-title">Como funciona</p>
       <ol>
-        <li>Alguien publica su mascota perdida</li>
-        <li>Otro usuario la encuentra y ve la publicacion</li>
-        <li>Mascota reunida con su duenio</li>
+        <li>Publica el caso con foto y datos claros</li>
+        <li>La comunidad filtra y encuentra coincidencias</li>
+        <li>Contacto directo por WhatsApp para reunificacion</li>
       </ol>
       <div class="hero-metrics">
         <div>
@@ -78,7 +73,7 @@
     </div>
   </section>
 
-  <section class="cards-section">
+  <section class="cards-section" id="publicaciones">
     <div class="section-head">
       <h2>Publicaciones recientes</h2>
       <p>Revisa detalles, ultima ubicacion y contacto directo por WhatsApp.</p>
@@ -102,10 +97,6 @@
           <p class="location" *ngIf="report.foundAddress">Donde se encontro: {{ report.foundAddress }}</p>
           <div class="card-actions">
             <a class="whatsapp-link" [href]="getWhatsAppUrl(report)" target="_blank" rel="noopener">WhatsApp</a>
-            <ng-container *ngIf="(session$ | async)?.role === 'admin'">
-              <button type="button" class="ghost-btn" (click)="startEdit(report)">Editar</button>
-              <button type="button" class="ghost-btn danger" (click)="deleteReport(report.id)">Eliminar</button>
-            </ng-container>
           </div>
         </div>
       </article>
@@ -121,89 +112,67 @@
   </section>
 
   <section class="form-section" id="formulario">
-    <ng-container *ngIf="session$ | async as session; else publishGate">
-      <div class="section-head">
-        <h2>{{ editingReportId ? 'Editar reporte' : 'Formulario de reporte' }}</h2>
-        <p>
-          {{ editingReportId ? 'Actualiza la informacion y guarda los cambios.' : 'Captura la informacion completa para que otros puedan ayudar.' }}
-        </p>
+    <div class="section-head">
+      <h2>Formulario de reporte</h2>
+      <p>Completa los datos clave y publica al instante para que mas personas puedan ayudarte.</p>
+    </div>
+
+    <form [formGroup]="reportForm" (ngSubmit)="onSubmit()" novalidate>
+      <label class="file-field full">
+        <span>Foto de la mascota</span>
+        <input type="file" accept="image/*" (change)="onImageSelected($event)" />
+        <small>{{ selectedImageName }}</small>
+      </label>
+
+      <label>
+        <span>Nombre de la mascota</span>
+        <input type="text" formControlName="petName" placeholder="Ej. Luna" />
+      </label>
+
+      <label>
+        <span>Numero de contacto</span>
+        <input type="tel" formControlName="phone" placeholder="Ej. 5512345678" />
+      </label>
+
+      <label class="full">
+        <span>Descripcion (color, raza, tamano)</span>
+        <textarea formControlName="description" rows="3" placeholder="Ej. Mestiza, color cafe, tamano mediano"></textarea>
+      </label>
+
+      <label>
+        <span>Zona o colonia</span>
+        <input type="text" formControlName="neighborhood" placeholder="Ej. Colonia Roma Norte" />
+      </label>
+
+      <label>
+        <span>Ultima direccion donde se vio</span>
+        <input type="text" formControlName="lastSeenAddress" placeholder="Ej. Calle Puebla 120" />
+      </label>
+
+      <label class="full">
+        <span>Si fue encontrada, donde fue encontrada</span>
+        <input type="text" formControlName="foundAddress" placeholder="Ej. Parque Mexico, entrada principal" />
+      </label>
+
+      <fieldset class="full">
+        <legend>Tipo de reporte</legend>
+        <label class="radio-inline">
+          <input type="radio" formControlName="type" value="perdida" />
+          <span>Perdida</span>
+        </label>
+        <label class="radio-inline">
+          <input type="radio" formControlName="type" value="encontrada" />
+          <span>Encontrada</span>
+        </label>
+      </fieldset>
+
+      <div class="form-actions full">
+        <button class="action-btn submit" type="submit" [disabled]="isSubmitting">
+          <span>{{ isSubmitting ? 'Guardando...' : 'Publicar reporte' }}</span>
+          <span aria-hidden="true">→</span>
+        </button>
       </div>
-
-      <div class="edit-banner" *ngIf="editingReportId">
-        <span>Modo edicion activo</span>
-        <button type="button" class="ghost-btn" (click)="cancelEdit()">Cancelar edicion</button>
-      </div>
-
-      <form [formGroup]="reportForm" (ngSubmit)="onSubmit()" novalidate>
-        <label class="file-field">
-          <span>Foto</span>
-          <input type="file" accept="image/*" (change)="onImageSelected($event)" />
-          <small>{{ selectedImageName }}</small>
-        </label>
-
-        <label>
-          <span>Nombre de la mascota</span>
-          <input type="text" formControlName="petName" placeholder="Ej. Luna" />
-        </label>
-
-        <label>
-          <span>Descripcion (color, raza, tamano)</span>
-          <textarea formControlName="description" rows="3" placeholder="Ej. Mestiza, color cafe, tamano mediano"></textarea>
-        </label>
-
-        <label>
-          <span>Zona o colonia</span>
-          <input type="text" formControlName="neighborhood" placeholder="Ej. Colonia Roma Norte" />
-        </label>
-
-        <label>
-          <span>Direccion de ultima vez donde se vio</span>
-          <input type="text" formControlName="lastSeenAddress" placeholder="Ej. Calle Puebla 120" />
-        </label>
-
-        <label>
-          <span>Si se encontro, en donde se encontro</span>
-          <input type="text" formControlName="foundAddress" placeholder="Ej. Parque Mexico, entrada principal" />
-        </label>
-
-        <label>
-          <span>Numero de contacto</span>
-          <input type="tel" formControlName="phone" placeholder="Ej. 5512345678" />
-        </label>
-
-        <fieldset>
-          <legend>Tipo de reporte</legend>
-          <label class="radio-inline">
-            <input type="radio" formControlName="type" value="perdida" />
-            <span>Perdida</span>
-          </label>
-          <label class="radio-inline">
-            <input type="radio" formControlName="type" value="encontrada" />
-            <span>Encontrada</span>
-          </label>
-        </fieldset>
-
-        <div class="form-actions">
-          <button class="action-btn submit" type="submit" [disabled]="isSubmitting">
-            <span>{{ isSubmitting ? 'Guardando...' : (editingReportId ? 'Guardar cambios' : 'Publicar reporte') }}</span>
-            <span aria-hidden="true">→</span>
-          </button>
-          <button *ngIf="editingReportId" type="button" class="ghost-btn" (click)="cancelEdit()">Salir del modo edicion</button>
-        </div>
-      </form>
-    </ng-container>
-
-    <ng-template #publishGate>
-      <div class="publish-gate">
-        <p class="eyebrow">Inicio de sesion requerido</p>
-        <h2>Inicia sesion para publicar mascotas</h2>
-        <p>Registrate o entra con una cuenta para crear y administrar reportes desde esta plataforma.</p>
-        <div class="gate-actions">
-          <a routerLink="/login" class="action-btn">Entrar</a>
-          <a routerLink="/register" class="ghost-btn">Crear cuenta</a>
-        </div>
-      </div>
-    </ng-template>
+    </form>
   </section>
 </main>
 

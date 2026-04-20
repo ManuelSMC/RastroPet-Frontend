@@ -35,12 +35,12 @@ export class LoginComponent {
     this.errorMessage = '';
 
     try {
-      const session = await this.auth.login(
+      await this.auth.login(
         this.loginForm.controls.email.value,
         this.loginForm.controls.password.value
       );
       const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
-      const nextRoute = returnUrl || (session.role === 'admin' ? '/admin' : '/dashboard');
+      const nextRoute = returnUrl || '/dashboard';
       await this.router.navigateByUrl(nextRoute);
     } catch (error) {
       this.errorMessage = error instanceof Error ? error.message : 'No se pudo iniciar sesion';

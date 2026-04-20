@@ -16,7 +16,6 @@ export class DashboardComponent implements OnInit {
 
   session: AuthSession | null = null;
   totalUsers = 0;
-  adminCount = 0;
 
   async ngOnInit(): Promise<void> {
     await this.auth.ensureReady();
@@ -25,10 +24,8 @@ export class DashboardComponent implements OnInit {
     try {
       const stats = await this.auth.getUserStats();
       this.totalUsers = stats.totalUsers;
-      this.adminCount = stats.totalAdmins;
     } catch {
       this.totalUsers = 0;
-      this.adminCount = 0;
     }
   }
 

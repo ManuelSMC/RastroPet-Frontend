@@ -3,7 +3,7 @@
     <div>
       <p class="eyebrow">Panel de usuario</p>
       <h1>Bienvenido{{ session ? ', ' + session.name : '' }}</h1>
-      <p class="subtitle">Administra tu cuenta, navega por el sitio y cambia al panel correcto segun tu rol.</p>
+      <p class="subtitle">Administra tu cuenta y vuelve al muro para seguir ayudando a reunir mascotas con su familia.</p>
     </div>
 
     <div class="actions">
@@ -14,16 +14,12 @@
 
   <section class="stats-grid">
     <article>
-      <span>{{ session?.role }}</span>
-      <small>Rol actual</small>
+      <span>{{ session?.name ? 'Activa' : 'Sin sesion' }}</span>
+      <small>Sesion</small>
     </article>
     <article>
       <span>{{ totalUsers }}</span>
-      <small>Usuarios guardados</small>
-    </article>
-    <article>
-      <span>{{ adminCount }}</span>
-      <small>Admins</small>
+      <small>Usuarios registrados</small>
     </article>
   </section>
 
@@ -31,8 +27,8 @@
     <h2>Accesos rapidos</h2>
     <div class="links">
       <a routerLink="/" class="link-card">Explorar mascotas</a>
-      <a routerLink="/admin" class="link-card">Panel admin</a>
-      <a routerLink="/register" class="link-card">Crear otra cuenta</a>
+      <a href="/#formulario" class="link-card">Publicar reporte</a>
+      <a routerLink="/register" class="link-card">Crear nueva cuenta</a>
     </div>
   </section>
 </section>
