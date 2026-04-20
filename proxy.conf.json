@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://localhost:3000",
+    "target": "http://rastropet-backend-production.up.railway.app",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"

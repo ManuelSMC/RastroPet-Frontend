@@ -9,7 +9,7 @@ npm install
 npm start
 ```
 
-La app corre en `http://localhost:4200`.
+La app corre en `https://rastropet.vercel.app`.
 
 ## Produccion en Vercel
 
