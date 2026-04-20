@@ -1,0 +1,64 @@
+<div class="admin-shell">
+  <header class="admin-header">
+    <div>
+      <p class="eyebrow">Panel de administracion</p>
+      <h1>RastroPet Admin</h1>
+      <p class="subtitle">Gestiona publicaciones, revisa estadisticas rapidas y elimina reportes incorrectos.</p>
+    </div>
+
+    <div class="actions">
+      <a routerLink="/" class="ghost-btn">Volver al sitio</a>
+      <button type="button" class="action-btn" (click)="reload()">Recargar</button>
+    </div>
+  </header>
+
+  <section class="stats-grid">
+    <article>
+      <span>{{ totalReports }}</span>
+      <small>Total</small>
+    </article>
+    <article>
+      <span>{{ lostReports }}</span>
+      <small>Perdidas</small>
+    </article>
+    <article>
+      <span>{{ foundReports }}</span>
+      <small>Encontradas</small>
+    </article>
+  </section>
+
+  <p class="status-pill">{{ statusMessage }}</p>
+
+  <section class="table-card" *ngIf="reports.length; else emptyAdmin">
+    <div class="table-head">
+      <span>Mascota</span>
+      <span>Zona</span>
+      <span>Contacto</span>
+      <span>Estado</span>
+      <span>Acciones</span>
+    </div>
+
+    <div class="table-row" *ngFor="let report of reports; trackBy: trackByReportId">
+      <div class="pet-cell">
+        <img [src]="report.imageUrl" [alt]="report.petName" />
+        <div>
+          <strong>{{ report.petName }}</strong>
+          <p>{{ report.description }}</p>
+        </div>
+      </div>
+      <span>{{ report.neighborhood }}</span>
+      <a [href]="getWhatsAppUrl(report.phone)" target="_blank" rel="noopener">{{ report.phone }}</a>
+      <span class="tag" [class.lost]="report.type === 'perdida'" [class.found]="report.type === 'encontrada'">
+        {{ report.type === 'perdida' ? 'Perdida' : 'Encontrada' }}
+      </span>
+      <button type="button" class="ghost-btn danger" (click)="deleteReport(report.id)">Eliminar</button>
+    </div>
+  </section>
+
+  <ng-template #emptyAdmin>
+    <div class="empty-state">
+      <h2>No hay publicaciones para administrar</h2>
+      <p>Cuando existan reportes apareceran aqui para revision.</p>
+    </div>
+  </ng-template>
+</div>

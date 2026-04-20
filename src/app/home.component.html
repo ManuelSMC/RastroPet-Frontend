@@ -1,0 +1,187 @@
+<div class="page-bg"></div>
+<div class="page-texture"></div>
+
+<header class="navbar">
+  <div class="logo-wrap">
+    <span class="paw" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2c1.1 0 2 .9 2 2 0 1.7-1 3-2 3s-2-1.3-2-3c0-1.1.9-2 2-2Zm-5 3c1 0 1.8.8 1.8 1.8S8 8.6 7 8.6 5.2 7.8 5.2 6.8 6 5 7 5Zm10 0c1 0 1.8.8 1.8 1.8S18 8.6 17 8.6s-1.8-.8-1.8-1.8S16 5 17 5ZM4 10.2c1.2 0 2.2 1 2.2 2.2S5.2 14.6 4 14.6 1.8 13.6 1.8 12.4 2.8 10.2 4 10.2Zm16 0c1.2 0 2.2 1 2.2 2.2s-1 2.2-2.2 2.2-2.2-1-2.2-2.2 1-2.2 2.2-2.2ZM12 8.5c3.5 0 6.4 3 6.4 6.6 0 2.6-1.7 4.7-4 5.8-.8.4-1.6.1-2.1-.5-.2-.2-.4-.3-.7-.3s-.5.1-.7.3c-.5.6-1.3.9-2.1.5-2.3-1.1-4-3.2-4-5.8 0-3.6 2.9-6.6 6.4-6.6Z"/>
+      </svg>
+    </span>
+    <span class="logo-copy">
+      <span class="logo-name">RastroPet</span>
+      <span class="logo-subtitle">Mascotas perdidas y encontradas en Mexico</span>
+    </span>
+  </div>
+
+  <div class="nav-actions">
+    <button class="action-btn secondary" type="button" (click)="scrollToForm()">
+      <span>Reportar mascota</span>
+      <span aria-hidden="true">+</span>
+    </button>
+    <a class="ghost-btn admin-link" routerLink="/admin">Panel admin</a>
+    <div class="filters" aria-label="Filtros de publicaciones">
+      <button type="button" [class.active]="selectedFilter === 'todas'" (click)="setFilter('todas')">Todas</button>
+      <button type="button" [class.active]="selectedFilter === 'perdida'" (click)="setFilter('perdida')">Perdidas</button>
+      <button type="button" [class.active]="selectedFilter === 'encontrada'" (click)="setFilter('encontrada')">Encontradas</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Plataforma comunitaria en Mexico</p>
+      <h1>Reporta y encuentra mascotas perdidas mas rapido</h1>
+      <p class="hero-description">
+        Publica sin registro, comparte la ultima direccion donde se vio o encontro y conecta por WhatsApp al instante.
+      </p>
+
+      <div class="hero-cta">
+        <button class="action-btn" type="button" (click)="scrollToForm()">
+          <span>Publicar ahora</span>
+          <span aria-hidden="true">↗</span>
+        </button>
+        <p class="counter">{{ totalReports }} mascotas reportadas</p>
+      </div>
+
+      <p class="status-pill">{{ statusMessage }}</p>
+    </div>
+
+    <div class="hero-card">
+      <p class="mini-title">Como funciona</p>
+      <ol>
+        <li>Alguien publica su mascota perdida</li>
+        <li>Otro usuario la encuentra y ve la publicacion</li>
+        <li>Mascota reunida con su duenio</li>
+      </ol>
+      <div class="hero-metrics">
+        <div>
+          <span>{{ reports.length }}</span>
+          <small>publicaciones</small>
+        </div>
+        <div>
+          <span>{{ filteredReports.length }}</span>
+          <small>visibles</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cards-section">
+    <div class="section-head">
+      <h2>Publicaciones recientes</h2>
+      <p>Revisa detalles, ultima ubicacion y contacto directo por WhatsApp.</p>
+    </div>
+
+    <div class="cards-grid" *ngIf="filteredReports.length; else noReports">
+      <article class="pet-card" *ngFor="let report of filteredReports; trackBy: trackByReportId">
+        <img [src]="report.imageUrl" [alt]="'Foto de ' + report.petName" />
+        <div class="card-content">
+          <div class="card-top">
+            <div>
+              <h3>{{ report.petName }}</h3>
+              <p class="card-meta">{{ report.neighborhood }}</p>
+            </div>
+            <span class="tag" [class.lost]="report.type === 'perdida'" [class.found]="report.type === 'encontrada'">
+              {{ report.type === 'perdida' ? 'Perdida' : 'Encontrada' }}
+            </span>
+          </div>
+          <p class="description">{{ report.description }}</p>
+          <p class="location" *ngIf="report.lastSeenAddress">Ultima vez vista: {{ report.lastSeenAddress }}</p>
+          <p class="location" *ngIf="report.foundAddress">Donde se encontro: {{ report.foundAddress }}</p>
+          <div class="card-actions">
+            <a class="whatsapp-link" [href]="getWhatsAppUrl(report)" target="_blank" rel="noopener">WhatsApp</a>
+            <button type="button" class="ghost-btn" (click)="startEdit(report)">Editar</button>
+            <button type="button" class="ghost-btn danger" (click)="deleteReport(report.id)">Eliminar</button>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <ng-template #noReports>
+      <div class="empty-state">
+        <div class="empty-icon" aria-hidden="true">◌</div>
+        <h3>No hay publicaciones para este filtro</h3>
+        <p>Prueba otro filtro o publica la primera mascota para ayudar a la comunidad.</p>
+      </div>
+    </ng-template>
+  </section>
+
+  <section class="form-section" id="formulario">
+    <div class="section-head">
+      <h2>{{ editingReportId ? 'Editar reporte' : 'Formulario de reporte' }}</h2>
+      <p>
+        {{ editingReportId ? 'Actualiza la informacion y guarda los cambios.' : 'Captura la informacion completa para que otros puedan ayudar.' }}
+      </p>
+    </div>
+
+    <div class="edit-banner" *ngIf="editingReportId">
+      <span>Modo edicion activo</span>
+      <button type="button" class="ghost-btn" (click)="cancelEdit()">Cancelar edicion</button>
+    </div>
+
+    <form [formGroup]="reportForm" (ngSubmit)="onSubmit()" novalidate>
+      <label class="file-field">
+        <span>Foto</span>
+        <input type="file" accept="image/*" (change)="onImageSelected($event)" />
+        <small>{{ selectedImageName }}</small>
+      </label>
+
+      <label>
+        <span>Nombre de la mascota</span>
+        <input type="text" formControlName="petName" placeholder="Ej. Luna" />
+      </label>
+
+      <label>
+        <span>Descripcion (color, raza, tamano)</span>
+        <textarea formControlName="description" rows="3" placeholder="Ej. Mestiza, color cafe, tamano mediano"></textarea>
+      </label>
+
+      <label>
+        <span>Zona o colonia</span>
+        <input type="text" formControlName="neighborhood" placeholder="Ej. Colonia Roma Norte" />
+      </label>
+
+      <label>
+        <span>Direccion de ultima vez donde se vio</span>
+        <input type="text" formControlName="lastSeenAddress" placeholder="Ej. Calle Puebla 120" />
+      </label>
+
+      <label>
+        <span>Si se encontro, en donde se encontro</span>
+        <input type="text" formControlName="foundAddress" placeholder="Ej. Parque Mexico, entrada principal" />
+      </label>
+
+      <label>
+        <span>Numero de contacto</span>
+        <input type="tel" formControlName="phone" placeholder="Ej. 5512345678" />
+      </label>
+
+      <fieldset>
+        <legend>Tipo de reporte</legend>
+        <label class="radio-inline">
+          <input type="radio" formControlName="type" value="perdida" />
+          <span>Perdida</span>
+        </label>
+        <label class="radio-inline">
+          <input type="radio" formControlName="type" value="encontrada" />
+          <span>Encontrada</span>
+        </label>
+      </fieldset>
+
+      <div class="form-actions">
+        <button class="action-btn submit" type="submit" [disabled]="isSubmitting">
+          <span>{{ isSubmitting ? 'Guardando...' : (editingReportId ? 'Guardar cambios' : 'Publicar reporte') }}</span>
+          <span aria-hidden="true">→</span>
+        </button>
+        <button *ngIf="editingReportId" type="button" class="ghost-btn" (click)="cancelEdit()">Salir del modo edicion</button>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <p>RastroPet</p>
+  <p>Creditos Innovatec</p>
+</footer>
