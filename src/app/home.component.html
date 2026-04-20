@@ -122,26 +122,31 @@
         <span>Foto de la mascota</span>
         <input type="file" accept="image/*" (change)="onImageSelected($event)" />
         <small>{{ selectedImageName }}</small>
+        <small class="field-error" *ngIf="shouldShowImageError()">La foto es obligatoria.</small>
       </label>
 
       <label>
         <span>Nombre de la mascota</span>
         <input type="text" formControlName="petName" placeholder="Ej. Luna" />
+        <small class="field-error" *ngIf="shouldShowError('petName')">Ingresa el nombre de la mascota.</small>
       </label>
 
       <label>
         <span>Numero de contacto</span>
         <input type="tel" formControlName="phone" placeholder="Ej. 5512345678" />
+        <small class="field-error" *ngIf="shouldShowError('phone')">Ingresa un telefono valido (8 a 20 digitos).</small>
       </label>
 
       <label class="full">
         <span>Descripcion (color, raza, tamano)</span>
         <textarea formControlName="description" rows="3" placeholder="Ej. Mestiza, color cafe, tamano mediano"></textarea>
+        <small class="field-error" *ngIf="shouldShowError('description')">Describe rasgos para identificarla rapido.</small>
       </label>
 
       <label>
         <span>Zona o colonia</span>
         <input type="text" formControlName="neighborhood" placeholder="Ej. Colonia Roma Norte" />
+        <small class="field-error" *ngIf="shouldShowError('neighborhood')">La zona o colonia es obligatoria.</small>
       </label>
 
       <label>
@@ -172,6 +177,8 @@
           <span aria-hidden="true">→</span>
         </button>
       </div>
+
+      <p class="form-feedback full" *ngIf="attemptedSubmit">{{ statusMessage }}</p>
     </form>
   </section>
 </main>

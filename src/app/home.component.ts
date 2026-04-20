@@ -42,6 +42,7 @@ export class HomeComponent implements OnInit {
   filteredReports: PetReport[] = [];
   selectedImage: File | null = null;
   selectedImageName = 'Ninguna imagen seleccionada';
+  attemptedSubmit = false;
   isSubmitting = false;
   statusMessage = 'Listo para publicar una mascota.';
 
@@ -75,6 +76,8 @@ export class HomeComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.attemptedSubmit = true;
+
     if (this.reportForm.invalid || this.isSubmitting || !this.selectedImage) {
       this.reportForm.markAllAsTouched();
       this.statusMessage = 'Completa todos los campos obligatorios y agrega una foto para publicar.';
@@ -118,6 +121,15 @@ export class HomeComponent implements OnInit {
     window.location.href = '/';
   }
 
+  shouldShowError(controlName: keyof typeof this.reportForm.controls): boolean {
+    const control = this.reportForm.controls[controlName];
+    return control.invalid && (control.touched || control.dirty || this.attemptedSubmit);
+  }
+
+  shouldShowImageError(): boolean {
+    return this.attemptedSubmit && !this.selectedImage;
+  }
+
   private buildFormData(): FormData {
     const formData = new FormData();
 
@@ -138,6 +150,7 @@ export class HomeComponent implements OnInit {
 
   private resetFormState(message: string): void {
     this.isSubmitting = false;
+    this.attemptedSubmit = false;
     this.selectedImage = null;
     this.selectedImageName = 'Ninguna imagen seleccionada';
     this.statusMessage = message;

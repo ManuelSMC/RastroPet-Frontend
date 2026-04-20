@@ -437,6 +437,11 @@ fieldset {
   color: #67707a;
 }
 
+.field-error {
+  color: #a42f1c;
+  font-weight: 600;
+}
+
 input,
 textarea {
   border: 1px solid #d4c8b2;
@@ -465,6 +470,13 @@ legend {
 
 .submit {
   justify-self: start;
+}
+
+.form-feedback {
+  border-top: 1px dashed var(--line);
+  color: #43515f;
+  margin: 0;
+  padding-top: 0.75rem;
 }
 
 .action-btn:disabled {
