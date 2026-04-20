@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: '/api/reports'
+  apiUrl: 'https://rastropet-backend-production.up.railway.app/api/reports'
 };

@@ -15,6 +15,7 @@ La app corre en `https://rastropet.vercel.app`.
 
 - Define la variable de entorno `RAILWAY_API_URL` con la URL publica de tu backend en Railway, por ejemplo `https://tu-backend.up.railway.app`.
 - El script `npm run build` ejecuta `scripts/write-env.js` y genera `src/environments/environment.prod.ts` con la URL correcta.
+- Si `RAILWAY_API_URL` no esta definida, se usa `https://rastropet-backend-production.up.railway.app` como fallback.
 - `vercel.json` mantiene activas las rutas del frontend como `/admin`.
 
 ## Nota

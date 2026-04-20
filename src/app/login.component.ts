@@ -21,8 +21,8 @@ export class LoginComponent {
   errorMessage = '';
 
   readonly loginForm = this.fb.nonNullable.group({
-    email: ['admin@rastropet.com', [Validators.required, Validators.email]],
-    password: ['Admin123!', [Validators.required, Validators.minLength(6)]]
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   async submit(): Promise<void> {

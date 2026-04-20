@@ -7,12 +7,12 @@
     <form [formGroup]="loginForm" (ngSubmit)="submit()" novalidate>
       <label>
         <span>Correo</span>
-        <input type="email" formControlName="email" placeholder="admin@rastropet.com" />
+        <input type="email" formControlName="email" placeholder="tu-correo@ejemplo.com" />
       </label>
 
       <label>
         <span>Contraseña</span>
-        <input type="password" formControlName="password" placeholder="Admin123!" />
+        <input type="password" formControlName="password" placeholder="Ingresa tu contraseña" />
       </label>
 
       <button class="action-btn" type="submit" [disabled]="isSubmitting">
@@ -22,10 +22,7 @@
       <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
     </form>
 
-    <div class="demo-box">
-      <strong>Cuentas de prueba</strong>
-      <p>Admin: admin&#64;rastropet.com / Admin123!</p>
-      <p>Usuario: usuario&#64;rastropet.com / User123!</p>
+    <div class="login-links">
       <a routerLink="/register">Crear cuenta nueva</a>
     </div>
   </div>
