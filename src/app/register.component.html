@@ -1,0 +1,38 @@
+<section class="auth-page">
+  <div class="auth-card hero-copy">
+    <p class="eyebrow">Registro</p>
+    <h1>Crea tu cuenta</h1>
+    <p class="subtitle">Registra tu perfil para entrar al panel y acceder a las funciones del sitio.</p>
+
+    <form [formGroup]="registerForm" (ngSubmit)="submit()" novalidate>
+      <label>
+        <span>Nombre</span>
+        <input type="text" formControlName="name" placeholder="Tu nombre" />
+      </label>
+
+      <label>
+        <span>Correo</span>
+        <input type="email" formControlName="email" placeholder="correo@ejemplo.com" />
+      </label>
+
+      <label>
+        <span>Contraseña</span>
+        <input type="password" formControlName="password" placeholder="Minimo 6 caracteres" />
+      </label>
+
+      <label>
+        <span>Confirmar contraseña</span>
+        <input type="password" formControlName="confirmPassword" placeholder="Repite tu contraseña" />
+      </label>
+
+      <button class="action-btn" type="submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Creando...' : 'Crear cuenta' }}
+      </button>
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </form>
+
+    <p class="note">Las cuentas de usuario se guardan en el navegador para esta version frontend.</p>
+    <a routerLink="/login">Ya tengo cuenta</a>
+  </div>
+</section>

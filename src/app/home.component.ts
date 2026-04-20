@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AuthService } from './auth/auth.service';
 import { environment } from '../environments/environment';
 
 export type ReportType = 'perdida' | 'encontrada';
@@ -31,7 +32,10 @@ export interface PetReport {
 export class HomeComponent implements OnInit {
   private readonly http = inject(HttpClient);
   private readonly fb = inject(FormBuilder);
+  private readonly auth = inject(AuthService);
   private readonly apiUrl = environment.apiUrl;
+
+  readonly session$ = this.auth.session$;
 
   selectedFilter: FilterType = 'todas';
   reports: PetReport[] = [];
@@ -109,6 +113,11 @@ export class HomeComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (!this.auth.isAuthenticated()) {
+      this.statusMessage = 'Debes iniciar sesion para publicar reportes.';
+      return;
+    }
+
     if (this.reportForm.invalid || this.isSubmitting || (!this.selectedImage && !this.editingReportId)) {
       this.reportForm.markAllAsTouched();
       return;
@@ -175,6 +184,11 @@ export class HomeComponent implements OnInit {
 
   trackByReportId(_: number, report: PetReport): string {
     return report.id;
+  }
+
+  logout(): void {
+    this.auth.logout();
+    window.location.href = '/';
   }
 
   private buildFormData(): FormData {

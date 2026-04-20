@@ -107,6 +107,15 @@ footer p,
   align-items: center;
   display: flex;
   gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.session-chip {
+  border-radius: 999px;
+  background: rgba(15, 159, 154, 0.12);
+  color: var(--ink);
+  padding: 0.55rem 0.85rem;
+  font-weight: 700;
 }
 
 .filters {
@@ -144,6 +153,10 @@ footer p,
   text-decoration: none;
   padding: 0.62rem 0.85rem;
   background: rgba(31, 40, 51, 0.05);
+}
+
+.nav-actions .ghost-btn {
+  padding: 0.62rem 0.85rem;
 }
 
 main {
@@ -434,6 +447,27 @@ form,
   padding: 0.85rem 1rem;
 }
 
+.publish-gate {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--line);
+  border-radius: 1.2rem;
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.publish-gate h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  margin: 0;
+}
+
+.gate-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .edit-banner span {
   font-weight: 700;
 }
@@ -482,6 +516,9 @@ legend {
 }
 
 .form-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
   justify-content: flex-start;
 }
 
